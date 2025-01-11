@@ -1,10 +1,20 @@
 import React, {useEffect,useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import {useParams} from 'react-router'
+import { addToCart } from './redux/CartSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function ProList() {
     const {id} = useParams();
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state);
+
+    console.log(cart,"cart");
+    
     var componentMounted = true;
 
     useEffect(() => {
@@ -31,7 +41,15 @@ export default function ProList() {
         )
     } 
 
-    const Show = () => {
+ 
+    const Show = () => {   
+        const handleAddToCart = (data) => {
+            toast.success("Item added successfully !", {
+                position: "top-right"
+              });
+        dispatch(addToCart(data));
+      };
+
         return(
             <>
             <div className='col-md-6'>
@@ -50,7 +68,7 @@ export default function ProList() {
                     $ {product.price}
                 </h3>
                 <p className='lead'>{product.description}</p>
-                <buttton className="btn btn-outline-dark"> Add to cart</buttton>
+                <buttton className="btn btn-outline-dark" onClick={() => handleAddToCart(product)}> Add to cart</buttton>
             </div>
             </>
         );
@@ -62,8 +80,9 @@ export default function ProList() {
             <div className='row py-5'>
                 {loading ? <Loading/> : <Show/>}
             </div>
-
         </div>
+        <ToastContainer />
+
     </div>
   )
 }

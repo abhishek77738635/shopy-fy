@@ -6,7 +6,6 @@ import Card from './card'
 export default function shop() {
   return (
 <>
- 
     <div className='Card'>
     <Card/>
     </div>

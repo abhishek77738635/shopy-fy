@@ -1,0 +1,22 @@
+.containerx {
+    width: 60%;
+    overflow: hidden;
+    margin-right: 10px;
+  }
+  
+  .animatedText {
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 24px;
+    color: #333;
+    animation: flow 10s linear infinite;
+  }
+  
+  @keyframes flow {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-120%);
+    }
+  }

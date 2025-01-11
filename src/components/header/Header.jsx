@@ -1,8 +1,8 @@
 import React from 'react'
 import Search from './search'
 import {AppBar,Toolbar,styled,Typography} from '@mui/material'
-import Button from './button'
 import {Link} from 'react-router-dom'
+import Buttonw from './button'
 
 const StyledHeader = styled(AppBar)`
     background: #4AE7C3;
@@ -26,15 +26,12 @@ export default function Header() {
   return (
     
     <StyledHeader>
-        <Toolbar style={{display:'flex'}}>
-            
+        <Toolbar style={{display:'flex',height:"100%"}}>
                  <Subhead>
                    <Link to='/shop' style={{ marginLeft:'-2CM' ,textDecoration: 'none' , fontSize:'0.7cm', color:'black' , fontStyle:'Fantasy' , fontWeight:'bold'}}>SHOPY'FY</Link> 
                 </Subhead>
-                
             <Search/>
-            <Button/>
-            
+            <Buttonw/>
         </Toolbar>
     </StyledHeader>
   )

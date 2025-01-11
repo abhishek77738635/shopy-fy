@@ -1,82 +1,86 @@
- 
 import React, { Component } from "react";
 import "./login.css";
 
+class Login extends Component {
 
 
-
-class App extends Component {
 
   handleSubmit = e => {
-
-    fetch('https://fakestoreapi.com/auth/login',{
-            method:'POST',
-            body:JSON.stringify({
-                username: "mor_2314",
-                password: "83r5^_"
-            })
-        })
-            .then(res=>res.json())
-            .then(json=>console.log(json))
-
     e.preventDefault();
-    this.props.history.push("/shop");
-    // console.log(window);
-    // console.log(e.target.email.value);
-    // const history = useHistory();
-    if (!e.target.email.value) {
+
+    const { email, password } = e.target;
+
+    // Basic validation
+    if (!email.value) {
       alert("Email is required");
-    } else if (!e.target.email.value) {
-      alert("Valid email is required");
-    } else if (!e.target.password.value) {
-      alert("Password is required");
-    } else if (
-      e.target.email.value === "abhishek.samari1211@gmail.com" &&
-      e.target.password.value === "123456"
-    ) {
-      window.location.reload(true);
-      // alert("Successfully logged in")
-      // <Link to='/shop'>  </Link>
-      // vr = true;
-      // <Redirect to="/error-page" />
-      
-      // browserHistory.push('/shop');
-      e.target.email.value = "";
-      e.target.password.value = "";
-    } else {
-      alert("Wrong email or password combination");
+      return;
     }
+
+    if (!password.value) {
+      alert("Password is required");
+      return;
+    }
+
+    // Store credentials in localStorage
+    localStorage.setItem("email", email.value);
+    localStorage.setItem("password", password.value);
+
+    // Make the login API request
+    fetch('https://fakestoreapi.com/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: email.value,
+        password: password.value
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        // Redirect to the shop page upon successful login
+        if (json.token) {
+          this.props.history.push("/shop");
+          window.location.reload();
+        } else {
+          alert("Wrong email or password combination");
+        }
+      })
+      .catch(err => {
+        console.error("Error during login:", err);
+        alert("Something went wrong, please try again.");
+      });
   };
 
-  handleClick = e => {
+  handleSignUpClick = e => {
     e.preventDefault();
-    alert("Goes to registration page");
+    this.props.history.push("/register"); // Redirect to the registration page
   };
-   
+
   render() {
-  console.log(this.props);
+    console.log({username:"david_r",password:"3478*#54"});
     return (
-      <div className="App">
-        <form className="form" onSubmit={this.handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" placeholder="nome@email.com.br" />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">password</label>
-            <input type="password" name="password" />
-          </div>
-       <button className="primary">LOGIN</button>
-        </form>
-        <button className="secondary" onClick={this.handleClick}>
-          NEW USER? CLICK HERE TO SIGNUP
-        </button>
-      </div>
+      <React.Fragment>
+        <div className="containerss">
+        </div>
+        <div className="App">
+          <form className="form" onSubmit={this.handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="email">User Name</label>
+              <input name="email" placeholder="User Name" type="text" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input type="password" name="password" placeholder="Password" />
+            </div>
+            <button className="primary" type="submit">LOGIN</button>
+          </form>
+          {/* <button onClick={this.handleSignUpClick}>SIGN UP</button> */}
+        </div>
+      </React.Fragment>
     );
   }
 }
 
-export default App;
-
-
-
+export default Login;
